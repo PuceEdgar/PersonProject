@@ -1,0 +1,54 @@
+﻿@model PersonProject.Models.Person
+
+@{
+    ViewBag.Title = "Married";
+}
+
+<h2>Details</h2>
+
+<div>
+    
+        @using (Html.BeginForm("Married", "Person", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Person</h4>
+            <hr />
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.spouse_id, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.Spouse.first_name,
+                      new
+                      {
+
+                          @class = "autocomplete-with-hidden",
+                          data_url = Url.Action("GetListForAutocomplete", "Person")
+                      })
+                    @Html.HiddenFor(model => model.spouse_id)
+
+
+
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                    <a class="btn btn-default" href="@Url.Action("Index", "Person")">Cancel</a>
+                </div>
+            </div>
+        </div>
+}
+
+        <div>
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+
+    
+</div>
+

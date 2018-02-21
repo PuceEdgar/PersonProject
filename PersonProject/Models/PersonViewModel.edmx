@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PersonListModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="address_id" />
+          </Key>
+          <Property Name="address_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="address" Type="varchar" MaxLength="255" />
+          <Property Name="primary_address" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Person_Address">
+          <Key>
+            <PropertyRef Name="record_id" />
+          </Key>
+          <Property Name="person_id" Type="int" Nullable="false" />
+          <Property Name="address_id" Type="int" Nullable="false" />
+          <Property Name="record_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Persons">
+          <Key>
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="person_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="first_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="last_name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="dob" Type="date" Nullable="false" />
+          <Property Name="single_married" Type="varchar" MaxLength="255" />
+          <Property Name="spouse_id" Type="int" />
+          <Property Name="primary_address" Type="varchar(max)" />
+          <Property Name="phone_number" Type="varchar" MaxLength="50" />
+          <Property Name="phone_number_2" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK__Person_Ad__addre__15502E78">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="Person_Address" Type="Self.Person_Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="address_id" />
+            </Principal>
+            <Dependent Role="Person_Address">
+              <PropertyRef Name="address_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Person_Ad__perso__145C0A3F">
+          <End Role="Persons" Type="Self.Persons" Multiplicity="1" />
+          <End Role="Person_Address" Type="Self.Person_Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Person_Address">
+              <PropertyRef Name="person_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Persons_Persons">
+          <End Role="Persons" Type="Self.Persons" Multiplicity="0..1" />
+          <End Role="Persons1" Type="Self.Persons" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Persons1">
+              <PropertyRef Name="spouse_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonListModelStoreContainer">
+          <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Person_Address" EntityType="Self.Person_Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Persons" EntityType="Self.Persons" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Person_Ad__addre__15502E78" Association="Self.FK__Person_Ad__addre__15502E78">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="Person_Address" EntitySet="Person_Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Person_Ad__perso__145C0A3F" Association="Self.FK__Person_Ad__perso__145C0A3F">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Person_Address" EntitySet="Person_Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persons_Persons" Association="Self.FK_Persons_Persons">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Persons1" EntitySet="Persons" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PersonListModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="address_id" />
+          </Key>
+          <Property Name="address_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="address1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="primary_address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Person_Address" Relationship="Self.FK__Person_Ad__addre__15502E78" FromRole="Address" ToRole="Person_Address" />
+        </EntityType>
+        <EntityType Name="Person_Address">
+          <Key>
+            <PropertyRef Name="record_id" />
+          </Key>
+          <Property Name="person_id" Type="Int32" Nullable="false" />
+          <Property Name="address_id" Type="Int32" Nullable="false" />
+          <Property Name="record_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Address" Relationship="Self.FK__Person_Ad__addre__15502E78" FromRole="Person_Address" ToRole="Address" />
+          <NavigationProperty Name="Person" Relationship="Self.FK__Person_Ad__perso__145C0A3F" FromRole="Person_Address" ToRole="Persons" />
+        </EntityType>
+        <EntityType Name="Person">
+          <Key>
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="person_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="dob" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="single_married" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="spouse_id" Type="Int32" />
+          <Property Name="primary_address" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Person_Address" Relationship="Self.FK__Person_Ad__perso__145C0A3F" FromRole="Persons" ToRole="Person_Address" />
+          <Property Name="phone_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Persons1" Relationship="PersonListModel.FK_Persons_Persons" FromRole="Person" ToRole="Person1" />
+          <NavigationProperty Name="Spouse" Relationship="PersonListModel.FK_Persons_Persons" FromRole="Person1" ToRole="Person" />
+          <Property Name="phone_number_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK__Person_Ad__addre__15502E78">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="Person_Address" Type="Self.Person_Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="address_id" />
+            </Principal>
+            <Dependent Role="Person_Address">
+              <PropertyRef Name="address_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Person_Ad__perso__145C0A3F">
+          <End Role="Persons" Type="Self.Person" Multiplicity="1" />
+          <End Role="Person_Address" Type="Self.Person_Address" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Persons">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Person_Address">
+              <PropertyRef Name="person_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PersonListEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="Self.Address" />
+          <EntitySet Name="Person_Address" EntityType="Self.Person_Address" />
+          <EntitySet Name="Persons" EntityType="Self.Person" />
+          <AssociationSet Name="FK__Person_Ad__addre__15502E78" Association="Self.FK__Person_Ad__addre__15502E78">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Person_Address" EntitySet="Person_Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Person_Ad__perso__145C0A3F" Association="Self.FK__Person_Ad__perso__145C0A3F">
+            <End Role="Persons" EntitySet="Persons" />
+            <End Role="Person_Address" EntitySet="Person_Address" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Persons_Persons" Association="PersonListModel.FK_Persons_Persons">
+            <End Role="Person" EntitySet="Persons" />
+            <End Role="Person1" EntitySet="Persons" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_Persons_Persons">
+          <End Type="PersonListModel.Person" Role="Person" Multiplicity="0..1" />
+          <End Type="PersonListModel.Person" Role="Person1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Person">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Person1">
+              <PropertyRef Name="spouse_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PersonListModelStoreContainer" CdmEntityContainer="PersonListEntities">
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="PersonListModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="address_id" ColumnName="address_id" />
+                <ScalarProperty Name="address1" ColumnName="address" />
+                <ScalarProperty Name="primary_address" ColumnName="primary_address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Person_Address">
+            <EntityTypeMapping TypeName="PersonListModel.Person_Address">
+              <MappingFragment StoreEntitySet="Person_Address">
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="address_id" ColumnName="address_id" />
+                <ScalarProperty Name="record_id" ColumnName="record_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Persons">
+            <EntityTypeMapping TypeName="PersonListModel.Person">
+              <MappingFragment StoreEntitySet="Persons">
+                <ScalarProperty Name="phone_number_2" ColumnName="phone_number_2" />
+                <ScalarProperty Name="phone_number" ColumnName="phone_number" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="dob" ColumnName="dob" />
+                <ScalarProperty Name="single_married" ColumnName="single_married" />
+                <ScalarProperty Name="spouse_id" ColumnName="spouse_id" />
+                <ScalarProperty Name="primary_address" ColumnName="primary_address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

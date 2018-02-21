@@ -1,0 +1,21 @@
+﻿@model PersonProject.Models.MainViewModel
+@{
+    ViewBag.Title = "Single";
+}
+
+<h2>Single</h2>
+
+<h4></h4>
+@using (Html.BeginForm("Single", "Person", FormMethod.Post))
+{
+    @Html.HiddenFor(x => x.person.single_married)
+    @Html.HiddenFor(x => x.person.person_id)
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+            <a class="btn btn-default" href="@Url.Action("Index", "Person")">Cancel</a>
+
+        </div>
+    </div>
+}
+

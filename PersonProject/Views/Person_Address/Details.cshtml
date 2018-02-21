@@ -1,0 +1,34 @@
+﻿@model PersonProject.Models.Person_Address
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Person_Address</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.address1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.address1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Person.first_name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Person.first_name)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.record_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,60 @@
+﻿@model PersonProject.Models.MainViewModel
+
+
+@{
+    ViewBag.Title = "Test";
+}
+
+<h2>Test</h2>
+
+
+@foreach (var item in Model.iePerson)
+{
+    <tr>
+        <td>
+            @Html.Display(item.first_name)  @Html.Display(item.last_name)
+        </td>
+
+        <td>
+            @Html.Display(Convert.ToString(item.age))
+
+        </td>
+        <td>
+
+
+            @if (item.single_married.Equals("Single") || item.single_married.Equals("Married"))
+        {
+        <p>@item.single_married @Html.DisplayFor(modelItem => item.Spouse.full_name)</p>
+        } else
+        {
+
+            using (Html.BeginForm())
+            {
+        <select class="marital_status disabled" name="marital_status" id="@item.person_id" onchange="changeStatus(this.id)">
+
+            <option value="select">Please select:</option>
+            <option value="Single">Single</option>
+            <option value="Married">Married</option>
+
+        </select>
+            }
+
+
+        }
+
+
+
+        </td>
+
+        <td>
+            @Html.DisplayFor(modelItem => item.Spouse.full_name)
+
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.person_id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.person_id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.person_id })
+        </td>
+    </tr>
+}

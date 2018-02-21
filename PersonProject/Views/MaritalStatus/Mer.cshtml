@@ -1,0 +1,45 @@
+﻿@model PersonProject.Models.MainViewModel
+
+<!DOCTYPE html>
+
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Show Validations in Bootstrap Model Popup </title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+</head>
+<body>
+    <div>
+
+        <!-- Modal -->
+        @using (Ajax.BeginForm("Mer", "MaritalStatus", new AjaxOptions() { HttpMethod = "POST", UpdateTargetId = "frmEmp" }))
+        {
+
+            <div>
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel">Model Popup Validations</h4>
+                            </div>
+                            <div class="modal-body" id="frmEmp">
+                                @Html.Partial("_Mer")
+                            </div>
+                            <div class="modal-footer">
+                                <input type="submit" class="btn btn-primary" value="Submit" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+</body>
+</html>

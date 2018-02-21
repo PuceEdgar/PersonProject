@@ -1,0 +1,247 @@
+﻿@model PersonProject.Models.MainViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+
+
+<br />
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#add">Add person</button>
+
+<br />
+<br />
+
+<!--<p>
+    @Html.ActionLink("Add", "Create")
+</p>-->
+<table class="table">
+    <tr>
+        <th>
+            Full name
+        </th>
+
+        <th>
+            Age
+        </th>
+        <th>
+            Action
+        </th>
+
+
+    </tr>
+
+
+    @foreach (var item in Model.iePerson)
+    {
+
+        <tr id="row_@item.person_id">
+            <td>
+                @Html.DisplayFor(modelItem => item.first_name)  @Html.DisplayFor(modelItem => item.last_name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.age)
+
+            </td>
+            <td>
+                @if (item.single_married != null)
+                {
+                    <p>@item.single_married @Html.DisplayFor(modelItem => item.Spouse.full_name)</p>
+                }
+                else
+                {
+                    using (Html.BeginForm())
+                    {
+                        <select class="marital_status disabled" name="marital_status" id="@item.person_id">
+
+                            <option value="select">Please select:</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+
+                        </select>
+                    }
+                }
+
+
+            </td>
+
+
+
+            <!--<td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.person_id }) |
+                @Html.ActionLink("Single", "Single", new { id = item.person_id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.person_id })
+            </td>-->
+        </tr>
+    }
+
+</table>
+
+
+
+
+
+
+    <div>
+        <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="modalContent">
+                    <div class="modal-header">
+                        <h2>Add person</h2>
+
+                    </div>
+                    <div class="modal-body " id="newPerson">
+
+                        @Html.Partial("_AddPerson")
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal Single -->
+    <div id="marital_status_change" class="modal fade single" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content single">
+               
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+
+
+    <div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content" id="modalContent">
+                   
+                    <div class="modal-body married" id="frmEmp">
+
+                        @Html.Partial("_Mer")
+
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+
+        <script type="text/javascript">
+            $('select').on('change', function () {
+                //alert(" id is: " + this.id + this.value);
+
+
+                if (this.value == "Single") {
+                    //alert("single");
+
+                    $('.modal-body').load('/Person/Single/' + this.id, function () {
+                        $('#marital_status_change').modal({ show: true });
+                    });
+
+
+
+                } else if (this.value == "Married") {
+                    //alert("married");
+
+                    $('.married').load('/Person/Mer/' + this.id, function () {
+                        $('#myModal').modal({ show: true });
+                    });
+
+
+
+                }
+
+            })
+
+
+
+            $.noConflict();
+            $("body").delegate(".datepicker", "focusin", function () {
+                $(this).datepicker({
+                    dateFormat: "yy/mm/dd",
+                    changeMonth: true,
+                    changeYear: true,
+                    yearRange: "1920:2018",
+                    showOn: "both",
+                    buttonText: "<i class='fa fa-calendar'></i>"
+                });
+            });
+
+
+            $("body").delegate(".autocomplete-with-hidden", "focusin", function () {
+                $(this).autocomplete({
+                    minLength: 0,
+                    source: function (request, response) {
+                        var url = $(this.element).data('url');
+
+                        $.getJSON(url, { term: request.term }, function (data) {
+                            response(data);
+                        })
+                    },
+                    select: function (event, ui) {
+                        $(event.target).next('input[type=hidden]').val(ui.item.id);
+                    },
+                    change: function (event, ui) {
+                        if (!ui.item) {
+                            $(event.target).val('').next('input[type=hidden]').val('');
+                        }
+                    }
+                });
+            });
+
+
+
+            function addressCheck() {
+
+                var ad1 = $('#allAddresses_0__address1').val();
+                var ad2 = $('#allAddresses_1__address1').val();
+                var ad3 = $('#allAddresses_2__address1').val();
+
+                if (ad1 != "" || ad2 != "" || ad3 != "") {
+                    return true
+                }
+
+                alert("please type in address!");
+                return false;
+
+            }
+
+
+
+            function success() {
+                window.location.href = '/Person/Index';
+            }
+
+
+        </script>
+
+
+
+
+
+
+
+
+
+    }
